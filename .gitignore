@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+nohup.out
+
+# checkpoints
+checkpoints/
+checkpoints_forZinan/
+checkpoints_cp/
+outs/
+log_all/
+log_new/
+wandb/
+sh/
+.vscode/
