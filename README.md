@@ -30,7 +30,7 @@ The following table provides the scores achieved on the test dataset we provided
 | JADE Pro 8.9 | -       | -         | -         | -          | -                                     | 0.202    | 0.196  | 0.181     | 0.201  |
 | Xqueryer     | -       | -         | -         | -          | -                                     | **0.725**| **0.717**| **0.734**| **0.711** |
 
-<a name="park2017classification">Park et al., 2017. Classification of phases using CNN.</a>
+<a name="park2017classification">[Park et al., 2017. Classification of phases using CNN](https://github.com/).</a>
 <a name="lee2020deep">Lee et al., 2020. Deep learning approach to phase identification.</a>
 <a name="wang2020rapid">Wang et al., 2020. Rapid identification using CNN.</a>
 <a name="maffettone2021crystallography">Maffettone et al., 2021. Crystallography CNN application.</a>
