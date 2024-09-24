@@ -30,15 +30,24 @@ The following table provides the scores achieved on the test dataset we provided
 | JADE Pro 8.9 | -       | -         | -         | -          | -                                     | 0.202    | 0.196  | 0.181     | 0.201  |
 | Xqueryer     | -       | -         | -         | -          | -                                     | **0.725**| **0.717**| **0.734**| **0.711** |
 
-<a name="park2017classification">[Park et al., 2017. Classification of phases using CNN](https://github.com/).</a>
-<a name="lee2020deep">Lee et al., 2020. Deep learning approach to phase identification.</a>
-<a name="wang2020rapid">Wang et al., 2020. Rapid identification using CNN.</a>
-<a name="maffettone2021crystallography">Maffettone et al., 2021. Crystallography CNN application.</a>
-<a name="dong2021deep">Dong et al., 2021. Deep learning-based phase recognition.</a>
-<a name="szymanski2021probabilistic">Szymanski et al., 2021. Probabilistic CNN for phase identification.</a>
-<a name="lee2022powder">Lee et al., 2022. Powder diffraction identification using CNN.</a>
-<a name="le2023deep">Le et al., 2023. Deep learning methods for XRD.</a>
-<a name="salgado2023automated">Salgado et al., 2023. Automated phase identification using deep learning.</a>
+<a name="park2017classification">Classification of crystal structure using a convolutional neural network.</a>
+
+<a name="lee2020deep">Lee et al., 2020. A deep-learning technique for phase identification in multiphase inorganic compounds using synthetic XRD powder patterns.</a>
+
+<a name="wang2020rapid">Wang et al., 2020. Rapid identification of X-ray diffraction patterns based on very limited data by interpretable convolutional neural networks.</a>
+
+<a name="maffettone2021crystallography">Maffettone et al., 2021. Crystallography companion agent for high-throughput materials discovery.</a>
+
+<a name="dong2021deep">Dong et al., 2021. A deep convolutional neural network for real-time full profile analysis of big powder diffraction data.</a>
+
+<a name="szymanski2021probabilistic">Szymanski et al., 2021. Probabilistic deep learning approach to automate the interpretation of multi-phase diffraction spectra.</a>
+
+<a name="lee2022powder">Lee et al., 2022. Powder X-ray diffraction pattern is all you need for machine-learning-based symmetry identification and property prediction</a>
+
+
+<a name="le2023deep">Le et al., 2023. Deep Learning Models to Identify Common Phases across Material Systems from X-ray Diffraction.</a>
+
+<a name="salgado2023automated">Salgado et al., 2023. Automated classification of big X-ray diffraction data using deep learning models.</a>
 
 ## How to Contribute
 
