@@ -9,6 +9,8 @@
 ## Space Group Classification
 ![image](https://github.com/user-attachments/assets/e4adcaaa-47ac-446f-8f96-b66d7c4d31a6)
 
+## Tutorials
+- **Training framework**: [model_tutorial](./src/Tutorial.ipynb)
 
 ## How to Contribute
 

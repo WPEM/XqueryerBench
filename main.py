@@ -27,7 +27,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--epochs', type=int, default=50,
                         help='number of epochs')
-    parser.add_argument('--model', type=str, default="Mamba",
+    parser.add_argument('--model', type=str, default="PatchTST",
                         help='Model name')
     parser.add_argument('--seed', type=int, default=100, metavar='N',
                         help='the rand seed')
@@ -53,14 +53,6 @@ if __name__ == "__main__":
     parser.add_argument('--gpu', type=int, default=0, help='gpu')
 
     #### only For time-series models ####
-    parser.add_argument('--expand', type=int, default=2, help='expansion factor for Mamba')
-    parser.add_argument('--top_k', type=int, default=5, help='for TimesBlock')
-    parser.add_argument('--num_kernels', type=int, default=6, help='for Inception')
-    parser.add_argument('--d_conv', type=int, default=4, help='conv kernel size for Mamba')
-    parser.add_argument('--embed', type=str, default='timeF',
-                        help='time features encoding, options:[timeF, fixed, learned]')
-    parser.add_argument('--freq', type=str, default='h',
-                        help='freq for time features encoding, options:[s:secondly, t:minutely, h:hourly, d:daily, b:business days, w:weekly, m:monthly], you can also use more detailed freq like 15min or 3h')
     parser.add_argument('--enc_in', type=int, default=1, help='encoder input size')
     parser.add_argument('--d_model', type=int, default=128,
                         help='dimension of model')
@@ -79,14 +71,9 @@ if __name__ == "__main__":
                         help='activation')
     parser.add_argument('--output_attention', action='store_true', default=False, 
                         help='whether to output attention in ecoder')
-    parser.add_argument('--llm_layers', type=int, default=3, 
-                        help='num of the LLm layers')
-    parser.add_argument('--mlp', type=int, default=0, 
-                        help='set 1 to tune the MLP in GPT4TS')
     parser.add_argument('--seq_len', type=int, default=3500, 
                         help='The length of XRD')
     parser.add_argument('--pred_len', type=int, default=3500, help='prediction sequence length')
-    parser.add_argument('--moving_avg', type=int, default=25, help='window size of moving average')
     parser.add_argument('--seg_len', type=int, default=50,
                         help='the length of segmen-wise iteration of SegRNN')
 

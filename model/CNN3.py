@@ -1,29 +1,46 @@
-import torch
-import torch.nn as nn
+from torch import nn
 import torch.nn.functional as F
-## a deep-learning technique for phase identification in multiphase inorganic compounds using syhthetic xrd powder patterns
-class Model(nn.Module):
-    def __init__(self,args):
-        super(Model, self).__init__()
-        self.conv1 = nn.Conv1d(1, 64, kernel_size=20, stride=1,padding=9)
-        self.conv2 = nn.Conv1d(64, 64, kernel_size=15, stride=1, padding=7)
-        self.conv3 = nn.Conv1d(64, 64, kernel_size=10, stride=2, padding=5)
-        self.pool1 = nn.MaxPool1d(kernel_size=3, stride=3, padding=1)
-        self.pool2 = nn.MaxPool1d(kernel_size=2, stride=3, padding=1)
-        self.pool3 = nn.MaxPool1d(kernel_size=2, stride=2, padding=1)
-        self.fcl1 = nn.Linear(8064,2500)
-        self.fcl2 = nn.Linear(2500,1000)
-
-        self.fcl3 = nn.Linear(1000,100315)
+class NoPoolCNN(nn.Module):
+    def __init__(self):
+        super(NoPoolCNN, self).__init__()
+        self.CNN = nn.Sequential(
+                nn.Conv1d(1, 80, 100, 5),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                nn.Conv1d(80, 80, 50, 5),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                nn.Conv1d(80, 80, 25, 2),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+            )
 
     def forward(self, x):
-        x = F.interpolate(x, size=4501,mode='linear', align_corners=False)
-        x = self.pool1(F.leaky_relu(self.conv1(x)))
-        x = self.pool2(F.leaky_relu(self.conv2(x)))
-        x = self.pool3(F.leaky_relu(self.conv3(x)))
-        x = x.view(x.size(0), -1)
-        x = self.fcl1(F.leaky_relu(x))
-        x = self.fcl2(F.leaky_relu(x))
-        x = self.fcl3(F.leaky_relu(x))
-        x = F.softmax(x, dim=1)
+        return self.CNN(x)
+
+class Predictor(nn.Module):
+    def __init__(self, in_features, out_features):
+        super(Predictor, self).__init__()
+
+        self.MLP = nn.Sequential(nn.Flatten(),
+                                 nn.Linear(in_features, 2300), nn.ReLU(), nn.Dropout(0.5),
+                                 nn.Linear(2300, 1150), nn.ReLU(), nn.Dropout(0.5),
+                                 nn.Linear(1150, out_features))
+
+    def forward(self, x):
+        return self.MLP(x)
+    
+
+class Model(nn.Module):
+    def __init__(self, args):
+        super(Model, self).__init__()
+        self.cnn = NoPoolCNN()
+        mlp_in_features = 12160
+
+        self.MLP = Predictor(mlp_in_features, 100315)
+        
+    def forward(self, x):
+        x = F.interpolate(x,size=8500,mode='linear', align_corners=False)
+        x = self.cnn(x)
+        x = self.MLP(x)
         return x

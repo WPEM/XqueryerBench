@@ -1,32 +1,28 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-## a deep-learning technique for phase identification in multiphase inorganic compounds using syhthetic xrd powder patterns
+## Deep Learning Models to Identify Common Phases across Material Systems from X‑ray Diffraction
 class Model(nn.Module):
     def __init__(self,args):
         super(Model, self).__init__()
-        self.conv1 = nn.Conv1d(1, 64, kernel_size=50, stride=2,padding=25)
-        self.conv2 = nn.Conv1d(64, 64, kernel_size=25, stride=3, padding=12)
-        self.pool1 = nn.MaxPool1d(kernel_size=3, stride=2, padding=1)
-        self.pool2 = nn.MaxPool1d(kernel_size=2, stride=3, padding=1)
-        self.fcl1 = nn.Linear(8064,2000)
-        self.fcl2 = nn.Linear(2000,500)
+        self.conv1 = nn.Conv1d(1, 24, kernel_size=12, stride=1)
+        self.conv2 = nn.Conv1d(24, 24, kernel_size=12, stride=1)
+        self.conv3 = nn.Conv1d(24, 24, kernel_size=12, stride=1)
+        self.conv4 = nn.Conv1d(24, 24, kernel_size=12, stride=1)
+        self.pool = nn.MaxPool1d(kernel_size=2, stride=2)
+        self.dropout = nn.Dropout(0.33)
 
-        self.fcl3 = nn.Linear(500,100315)
-        
+        self.fcl1 = nn.Linear(4992,2000)
+
+        self.fcl2 = nn.Linear(2000,100315)
         self.flatten = nn.Flatten()
 
     def forward(self, x):
-        ##
-        x = F.interpolate(x, size=4501,mode='linear', align_corners=False)
-        # x = F.interpolate(x, size=4409,mode='linear', align_corners=False)
-        # x = torch.cat((x,element),dim=2)
-        x = self.pool1(F.leaky_relu(self.conv1(x)))
-        x = self.pool2(F.leaky_relu(self.conv2(x)))
+        x = self.dropout(self.pool(F.relu(self.conv1(x))))
+        x = self.dropout(self.pool(F.relu(self.conv2(x))))
+        x = self.dropout(self.pool(F.relu(self.conv3(x))))
+        x = self.dropout(self.pool(F.relu(self.conv4(x))))
         x = self.flatten(x)
-        # x = x.view(x.size(0), -1)
-        x = self.fcl1(F.leaky_relu(x))
-        x = self.fcl2(F.leaky_relu(x))
-        x = self.fcl3(F.leaky_relu(x))
-        x = F.softmax(x, dim=1)
+        x = self.dropout(F.relu(self.fcl1(x)))
+        x = self.fcl2(x)
         return x

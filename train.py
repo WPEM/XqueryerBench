@@ -2,20 +2,16 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from model import CNN1,CNN2,CNN3,CNN4,CNN5,CNN6,CNN7,CNN8,CNN9,CNN10,CNN11,SegRNN,FiLM,TimesNet,Crossformer,Autoformer,DLinear, MLP, GRU, LSTM, RNN, BiGRU, BiLSTM, BiRNN, Transformer, iTransformer, PatchTST,MambaSimple
+from model import CNN1,CNN2,CNN3,SegRNN,GRU, LSTM, BiGRU, BiLSTM, iTransformer, PatchTST
 from dataset.dataset import ASEDataset
 from tqdm import tqdm
 import time
-import ast
-# import wget
-import sys
 from dataset.parse import load_dataset,bar_progress
 from sklearn.metrics import f1_score,precision_score,recall_score,accuracy_score
 import os
 from utils.tools import EarlyStopping, adjust_learning_rate_withWarmup
 import json
 import wandb
-import datetime
 import warnings
 time_exp_dic = {'time': 0, 'counter': 0}
 class LabelSmoothingLoss(nn.Module):
@@ -90,61 +86,26 @@ def train(args,nowtime):
     """
 
     if args.model == 'cnn1':
-        model = CNN1.Model(args)
+        model = CNN1.Model(0.7,args)
     elif args.model == 'cnn2':
         model = CNN2.Model(args)
     elif args.model == 'cnn3':
         model = CNN3.Model(args)
-    elif args.model == 'cnn4':
-        model = CNN4.Model(args)
-    elif args.model == 'cnn5':
-        model = CNN5.Model(args)
-    elif args.model == 'cnn6':
-        model = CNN6.Model(args)
-    elif args.model == 'cnn7':
-        model = CNN7.Model(0.7,args)
-    elif args.model == 'cnn8':
-        model = CNN8.Model(args)
-    elif args.model == 'cnn9':
-        model = CNN9.Model(args)
-    elif args.model == 'cnn10':
-        model = CNN10.Model(args)
-    elif args.model == 'cnn11':
-        model = CNN11.Model(args)
-    elif args.model == 'mlp':
-        model = MLP.Model(args)
-    elif args.model == 'rnn':
-        model = RNN.Model(args)
     elif args.model == 'lstm':
         model = LSTM.Model(args)
     elif args.model == 'gru':
         model = GRU.Model(args)
-    elif args.model == 'birnn':
-        model = BiRNN.Model(args)
     elif args.model == 'bilstm':
         model = BiLSTM.Model(args)
     elif args.model == 'bigru':
         model = BiGRU.Model(args)
-    elif args.model == 'transformer':
-        model = Transformer.Model(args)
+    elif args.model == 'SegRNN':
+        model = SegRNN.Model(args)
     elif args.model == 'iTransformer':
         model = iTransformer.Model(args)
     elif args.model == 'PatchTST':
         model = PatchTST.Model(args)
-    elif args.model == 'Mamba':
-        model = MambaSimple.Model(args)
-    elif args.model == 'DLinear':
-        model = DLinear.Model(args)
-    elif args.model == 'Crossformer':
-        model = Crossformer.Model(args)
-    elif args.model == 'Autoformer':
-        model = Autoformer.Model(args)
-    elif args.model == 'TimesNet':
-        model = TimesNet.Model(args)
-    elif args.model == 'FiLM':
-        model = FiLM.Model(args)
-    elif args.model == 'SegRNN':
-        model = SegRNN.Model(args)
+
         
     save_path = f'/data/zzn/prl/checkpoints/{args.model}_lr{args.lr}_bs{args.batch_size}_{nowtime}_{args.seed}'
     if not os.path.exists('/data/zzn/prl/checkpoints'):
@@ -153,32 +114,6 @@ def train(args,nowtime):
     with open(save_path+'/args.json', 'w') as f:
         json.dump(args.__dict__, f)
     model = model.to(device)
-    # if args.weight:
-    #     # if args.task=='crysystem':
-    #     #     with open('utils/crystal.txt', 'r') as file:
-    #     #         data = file.readline().strip()
-    #     #     class_counts = ast.literal_eval(data)
-    #     #     adjusted_class_counts = {int(k) - 1: v for k, v in class_counts.items()}
-    #     #     total_samples = sum(adjusted_class_counts.values())
-    #     #     class_weights = {cls: total_samples / count for cls, count in adjusted_class_counts.items()}
-    #     #     weights = torch.tensor([class_weights[i] for i in range(len(adjusted_class_counts))], dtype=torch.float32)
-    #     # elif args.task=='spg':
-    #     #     class_counts = {}
-    #     #     with open('utils/spacegroup.txt', 'r') as file:
-    #     #         for line in file:
-    #     #             data = ast.literal_eval(line.strip())
-    #     #             for k, v in data:
-    #     #                 class_counts[int(k) - 1] = v
-    #     #     total_samples = sum(class_counts.values())
-    #     #     class_weights = {cls: total_samples / count for cls, count in class_counts.items()}
-    #     #     weights = torch.tensor([class_weights.get(i, 0) for i in range(230)], dtype=torch.float32)
-    #     criterion = nn.CrossEntropyLoss(weight=weights.to(device))
-    # else:
-    #     if args.label_smoothing:
-    #         criterion = LabelSmoothingLoss()
-    #     elif args.focal:
-    #         criterion = FocalLoss()
-    #     else:
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     early_stopping = EarlyStopping(patience=args.patience, verbose=True)
