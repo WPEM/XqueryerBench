@@ -17,9 +17,4 @@
 ## Tutorials
 - **Training framework**: [model_tutorial](./src/Tutorial.ipynb)
 
-## How to Contribute
 
-1. Upload your score on the branch. If verified, we will add your score to our benchmark (using the simulated test data).
-2. Email us your pre-trained model. We will test it on a private test dataset. If there is a large discrepancy in the results, we may request to review your code and training settings.
-
-**No cheating allowed!**
